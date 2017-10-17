@@ -1,0 +1,351 @@
+{
+  "name": "acronis-gateway",
+  "description": "Installs/Configures Acronis Storage Gateway",
+  "long_description": "# acronis-gateway\nInstalls and configures Acronis Storage Gateway as a docker container with some mounts on the host:\n- /var/lib/Acronis/storage\n- /var/lib/Acronis/acronis-storage-mds\n- /etc/pki/tls/certs/Acronis/storage\n- /var/log/Acronis\n- /etc/Acronis/acronis-storage-gateway.xml\n- /etc/Acronis/acronis-storage-mds.xml\n- /etc/Acronis/acronis-storage-backend-azure.xml, only if `azure` is selected as backend\n- /etc/Acronis/acronis-storage-backend-s3.xml, only if `s3` is selected as backend\n- /etc/Acronis/acronis-storage-backend-swift.xml, only if `swift` is selected as backend\n\n## Attributes\n\n| Name | Type | Default | Description | Required |\n|------|------|---------|-------------|----------|\n| `acronis-gateway/image` | string | ingrammicro/acronis-gateway:latest | Docker image with Acronis Gateway software to use | optional |\n| `acronis-gateway/image_tag` | string | latest | Specific tag for Docker image with Acronis Gateway software to use | optional |\n| `acronis-gateway/port` | string | 44445 | Port on which Acronis Storage Gateway will be listening | required |\n| `acronis-gateway/backend` | One of `local`,`azure`,`s3`,`swift` | local | Storage Backend where Acronis Storage Gateway will store your backup: a `local` directory in the machine or an `azure`, `s3` or (OpenStack) `swift` account | optional |\n| `acronis-gateway/home_path` | string | /var/lib/Acronis/storage | Path at the storage backend on which Acronis Storage Gateway will store your files | required if backend is `azure`, `s3` or `swift` |\n| `acronis-gateway/chunk_storage_path` | string |  | Path at the storage backend on which Acronis Storage Gateway will store chunks | required if backend is `s3` or `swift` |\n| `acronis-gateway/login` | string |  | The login for your administrator account in Acronis Backup Cloud | required |\n| `acronis-gateway/password` | string |  | The password for your administrator account in Acronis Backup Cloud | required |\n| `acronis-gateway/mgmt_console_host` | string | cloud.acronis.com | The web address of the Acronis Backup Cloud management console | optional |\n| `acronis-gateway/gateway_fqdn` | string | FQDN for the server | The public DNS name or public IP of the gateway | optional |\n| `acronis-gateway/storage_id` | string | read from /etc/Acronis/storage_id or randomly generated | A unique name for the storage that will be desplayed on the Storage tab of the Acronis Backup Cloud management console | optional |\n| `acronis-gateway/s3_access_key_id` | string |  | The Access Key ID for the S3 account to use as backend | required if backend is `s3` |\n| `acronis-gateway/s3_region` | string | us-east-1 | The S3 region for the S3 account to use as backend | optional |\n| `acronis-gateway/s3_secret_access_key` | string |  | The Secret Access Key for the S3 account to use as backend | required if backend is `s3` |\n| `acronis-gateway/azure_account` | string |  | The name of the Microsoft Azure account to use as backend | required if backend is `azure` |\n| `acronis-gateway/azure_access_key` | string |  | The secondary access key for the Microsoft Azure account to use as backend | required if backend is `azure` |\n| `acronis-gateway/swift_api_version` | One of `v1`,`v2`,`v3` | v3 | The API version used by the Keystone identity service providing access to the OpenStack Swift account to use as backend | optional |\n| `acronis-gateway/swift_keystone_service_url` | string |  | The URL for the Keystone identity service providing access to the OpenStack Swift account to use as backend | required if backend is `swift` |\n| `acronis-gateway/swift_user_domain_id` | string | default | The domain ID for the user of the OpenStack Swift account to use as backend | optional |\n| `acronis-gateway/swift_user_name` | string |  | The name for the user of the OpenStack Swift account to use as backend | required if backend is `swift` |\n| `acronis-gateway/swift_password` | string |  | The password for the user of the OpenStack Swift account to use as backend | required if backend is `swift` |\n| `acronis-gateway/swift_project_domain_id` | string | default | The domain ID for the project of the OpenStack Swift account to use as backend | optional |\n| `acronis-gateway/swift_project_name` | string |  | The domain ID for the project of the OpenStack Swift account to use as backend | required if backend is `swift` |\n",
+  "maintainer": "Pablo Baños López",
+  "maintainer_email": "pablob@softcom.com",
+  "license": "All Rights Reserved",
+  "platforms": {
+    "ubuntu": ">= 14.04"
+  },
+  "dependencies": {
+    "docker": "~> 2.0"
+  },
+  "providing": {
+
+  },
+  "attributes": {
+    "acronis-gateway/image": {
+      "display_name": "Acronis Gateway Docker image",
+      "description": "Docker image with Acronis Gateway software to use",
+      "type": "string",
+      "required": "optional",
+      "default": "ingrammicro/acronis-gateway:latest",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/image_tag": {
+      "display_name": "Acronis Gateway Docker image tag",
+      "description": "Specific tag for Docker image with Acronis Gateway software to use",
+      "type": "string",
+      "required": "optional",
+      "default": "latest",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/port": {
+      "display_name": "Port",
+      "description": "Port on which Acronis Storage Gateway will be listening",
+      "type": "string",
+      "required": "required",
+      "default": "44445",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/backend": {
+      "display_name": "Storage Backend",
+      "description": "Storage Backend where Acronis Storage Gateway will store your backup: a `local` directory in the machine or an `azure`, `s3` or (OpenStack) `swift` account",
+      "choice": [
+        "local",
+        "azure",
+        "s3",
+        "swift"
+      ],
+      "type": "string",
+      "required": "optional",
+      "default": "local",
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/home_path": {
+      "display_name": "Home Path",
+      "description": "Path at the storage backend on which Acronis Storage Gateway will store your files",
+      "type": "string",
+      "required": "optional",
+      "default": "/var/lib/Acronis/storage",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/chunk_storage_path": {
+      "display_name": "Chunk Storage Path",
+      "description": "Path at the storage backend on which Acronis Storage Gateway will store chunks",
+      "type": "string",
+      "required": "optional",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/login": {
+      "display_name": "Acronis login",
+      "description": "The login for your administrator account in Acronis Backup Cloud",
+      "type": "string",
+      "required": "required",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/password": {
+      "display_name": "Acronis password",
+      "description": "The password for your administrator account in Acronis Backup Cloud",
+      "type": "string",
+      "required": "required",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/mgmt_console_host": {
+      "display_name": "Acronis MGMT console host",
+      "description": "The web address of the Acronis Backup Cloud management console",
+      "type": "string",
+      "required": "optional",
+      "default": "cloud.acronis.com",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/gateway_fqdn": {
+      "display_name": "Acronis Gateway FQDN",
+      "description": "The public DNS name or public IP of the gateway",
+      "type": "string",
+      "required": "optional",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/storage_id": {
+      "display_name": "Storage ID",
+      "description": "A unique name for the storage that will be displayed on the Storage tab of the Acronis Backup Cloud management console",
+      "type": "string",
+      "required": "optional",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/s3_access_key_id": {
+      "display_name": "S3 Access Key ID",
+      "description": "The Access Key ID for the S3 account to use as backend",
+      "type": "string",
+      "required": "optional",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/s3_region": {
+      "display_name": "S3 Region",
+      "description": "The S3 region for the S3 account to use as backend",
+      "type": "string",
+      "required": "optional",
+      "default": "us-east-1",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/s3_secret_access_key": {
+      "display_name": "S3 Secret Access Key",
+      "description": "The Secret Access Key for the S3 account to use as backend",
+      "type": "string",
+      "required": "optional",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/azure_account": {
+      "display_name": "Microsoft Azure account name",
+      "description": "The name of the Microsoft Azure account to use as backend",
+      "type": "string",
+      "required": "optional",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/azure_access_key": {
+      "display_name": "Microsoft Azure secondary access key",
+      "description": "The secondary access key for the Microsoft Azure account to use as backend",
+      "type": "string",
+      "required": "optional",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/swift_api_version": {
+      "display_name": "OpenStack Swift API version",
+      "description": "The API version used by the Keystone identity service providing access to the OpenStack Swift account to use as backend",
+      "choice": [
+        "v1",
+        "v2",
+        "v3"
+      ],
+      "type": "string",
+      "required": "optional",
+      "default": "v3",
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/swift_keystone_service_url": {
+      "display_name": "OpenStack Swift Keystone URL",
+      "description": "The URL for the Keystone identity service providing access to the OpenStack Swift account to use as backend",
+      "type": "string",
+      "required": "optional",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/swift_user_domain_id": {
+      "display_name": "OpenStack Swift user domain ID",
+      "description": "The domain ID for the user of the OpenStack Swift account to use as backend",
+      "type": "string",
+      "required": "optional",
+      "default": "default",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/swift_user_name": {
+      "display_name": "OpenStack Swift user name",
+      "description": "The name for the user of the OpenStack Swift account to use as backend",
+      "type": "string",
+      "required": "optional",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/swift_password": {
+      "display_name": "OpenStack Swift password",
+      "description": "The password for the user of the OpenStack Swift account to use as backend",
+      "type": "string",
+      "required": "optional",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/swift_project_domain_id": {
+      "display_name": "OpenStack Swift project domain ID",
+      "description": "The domain ID for the project of the OpenStack Swift account to use as backend",
+      "type": "string",
+      "required": "optional",
+      "default": "default",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "acronis-gateway/swift_project_name": {
+      "display_name": "OpenStack Swift project domain ID",
+      "description": "The domain ID for the project of the OpenStack Swift account to use as backend",
+      "type": "string",
+      "required": "optional",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    }
+  },
+  "recipes": {
+    "acronis-gateway": "Installs/Configures Acronis Storage Gateway"
+  },
+  "version": "0.1.0",
+  "source_url": "",
+  "issues_url": "",
+  "privacy": false,
+  "chef_versions": [
+    [
+      ">= 12.1"
+    ]
+  ],
+  "ohai_versions": [
+
+  ],
+  "gems": [
+
+  ]
+}

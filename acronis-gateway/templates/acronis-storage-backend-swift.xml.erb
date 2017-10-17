@@ -1,0 +1,26 @@
+<SwiftSettings>
+  <KeystoneCatalogue>
+    <ApiVersion><%=node['acronis-gateway'][:swift_api_version]%></ApiVersion>
+    <Endpoint><%=node['acronis-gateway'][:swift_keystone_service_url]%></Endpoint>
+
+    <Identity> <!-- specify either user id, or (domain id, user name)-->
+      <Password>
+        <UserDomainId><%=node['acronis-gateway'][:swift_user_domain_id]%></UserDomainId>
+        <UserName><%=node['acronis-gateway'][:swift_user_name]%></UserName>
+        <Password><%=node['acronis-gateway'][:swift_password]%></Password>
+      </Password>
+    </Identity>
+
+    <Scope> <!-- specify either project id, or (domain id, project name)-->
+      <Project>
+        <ProjectDomainId><%=node['acronis-gateway'][:swift_project_domain_id]%></ProjectDomainId>
+        <ProjectName><%=node['acronis-gateway'][:swift_project_name]%></ProjectName>
+      </Project>
+    </Scope>
+  </KeystoneCatalogue>
+
+  <UserSettings>
+      <HomePath><%=node['acronis-gateway'][:home_path]%></HomePath>
+      <ChunkStoragePath><%=node['acronis-gateway'][:chunk_storage_path]%></ChunkStoragePath> 
+  </UserSettings>
+</SwiftSettings>

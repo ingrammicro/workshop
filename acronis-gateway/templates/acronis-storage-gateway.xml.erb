@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArchivingStorageSystemConfiguration>
+  <FrontEndServer>
+    <RequestTimeout><Seconds>600</Seconds></RequestTimeout>
+    <KeepConnectionTime><Seconds>300</Seconds></KeepConnectionTime>
+    <InternetInterface>0.0.0.0:<%=node['acronis-gateway'][:port]%></InternetInterface>
+    <CertificatePath>/etc/pki/tls/certs/Acronis/storage/fes.pem</CertificatePath>
+    <CheckFilesReloadPeriod><Minutes>1</Minutes></CheckFilesReloadPeriod>
+    <ThreadCount>8</ThreadCount>
+    <NetworkOptions>
+      <ThreadCount>8</ThreadCount>
+      <InterruptTimeout><Milliseconds>100</Milliseconds></InterruptTimeout>
+    </NetworkOptions>
+    <CheckFiles>
+      <Pair>
+        <Certificate>/etc/pki/tls/certs/Acronis/storage/reg.crt</Certificate>
+        <RevocationList>/etc/pki/tls/certs/Acronis/storage/reg.crl</RevocationList>
+      </Pair>
+      <Pair>
+        <Certificate>/etc/pki/tls/certs/Acronis/storage/dc.crt</Certificate>
+        <RevocationList>/etc/pki/tls/certs/Acronis/storage/dc.crl</RevocationList>
+      </Pair>
+      <Pair>
+        <Certificate>/etc/pki/tls/certs/Acronis/storage/root.crt</Certificate>
+        <RevocationList>/etc/pki/tls/certs/Acronis/storage/root.crl</RevocationList>
+      </Pair>
+    </CheckFiles>
+    <MetadataServers>
+      <Item>127.0.0.1:4444</Item>
+    </MetadataServers>
+    <MdsCatchingPeriod><Seconds>5</Seconds></MdsCatchingPeriod>
+    <FlushTimeout><Minutes>3</Minutes></FlushTimeout>
+    <SslOptions>
+      <CipherList>AES128-SHA:AES256-SHA:NULL-MD5</CipherList>
+    </SslOptions>
+    <FesfsPluginPath><%=case node['acronis-gateway'][:backend]
+    when 'local' then '/usr/lib/Acronis/acronis-storage-backend-local.so'
+    when 's3' then '/usr/lib/Acronis/acronis-storage-backend-S3.so'
+    when 'azure' then '/usr/lib/Acronis/acronis-storage-backend-azure.so'
+    when 'swift' then '/usr/lib/Acronis/acronis-storage-backend-swift.so'
+    else raise "Unknown acronis backend #{node['acronis-gateway'][:backend]}"
+    end %></FesfsPluginPath>
+    <FesfsParams><%=case node['acronis-gateway'][:backend]
+    when 'local' then '/var/lib/Acronis/storage'
+    when 's3' then '/etc/Acronis/acronis-storage-backend-s3.xml'
+    when 'azure' then '/etc/Acronis/acronis-storage-backend-azure.xml'
+    when 'swift' then '/etc/Acronis/acronis-storage-backend-swift.xml'
+    else raise "Unknown acronis backend #{node['acronis-gateway'][:backend]}" 
+    end%></FesfsParams>
+    <Statistic>
+      <Filter><Last/></Filter>
+      <DumpFileName>/var/log/Acronis/acronis-storage-gateway/stat.txt</DumpFileName>
+      <DumpPeriod><Seconds>10</Seconds></DumpPeriod>
+    </Statistic>
+    <LoggingSettings>
+      <Binary>
+        <LogFilePrefix>/var/log/Acronis/acronis-storage-gateway/</LogFilePrefix>
+        <LogFileSizeLimit>128</LogFileSizeLimit>
+        <Filter>
+          <Severity>
+            <Normal>Info</Normal>
+            <Errors>Warning</Errors>
+          </Severity>
+        </Filter>
+        <RetentionPolicy>
+          <Limits>
+            <Size>51200</Size>
+          </Limits>
+        </RetentionPolicy>
+      </Binary>
+    </LoggingSettings>
+  </FrontEndServer>
+</ArchivingStorageSystemConfiguration>

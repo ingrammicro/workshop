@@ -1,0 +1,11 @@
+<S3Settings>
+  <UserSettings>
+    <HomePath><%=node['acronis-gateway'][:home_path]%></HomePath>
+    <ChunkStoragePath><%=node['acronis-gateway'][:chunk_storage_path]%></ChunkStoragePath>
+  </serSettings>
+  <Endpoint>
+    <Account><%=node['acronis-gateway'][:s3_access_key_id]%></Account>
+    <Region><%=node['acronis-gateway'][:s3_region]%></Region>
+    <AccessKey><%=node['acronis-gateway'][:s3_secret_access_key]%></AccessKey>
+  </Endpoint>
+</S3Settings>

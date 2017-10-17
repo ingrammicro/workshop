@@ -1,0 +1,34 @@
+---
+driver:
+  name: vagrant
+  customize:
+    random_hostname: true
+
+provisioner:
+  name: chef_zero
+  # You may wish to disable always updating cookbooks in CI or other testing environments.
+  # For example:
+  #   always_update_cookbooks: <%= !ENV['CI'] %>
+  #always_update_cookbooks: true
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: ubuntu-16.04
+
+suites:
+  - name: default
+    run_list:
+      - recipe[acronis-gateway::default]
+      - recipe[chef-node-4-inspec::default]
+    verifier:
+      inspec_tests:
+        - test/smoke/default
+    attributes:
+      acronis-gateway:
+        image: 'pbanos/acronis-gateway'
+        login: '' # See https://kb.acronis.com/content/55882 for trial, use https://www.acronis.com/en-us/business/backup/trial/#registration or https://www.acronis.com/es-es/business/backup/trial/#registration to sign up
+        password: ''
+        mgmt_console_host: 'cloud.acronis.com'
+        #gateway_fqdn: ''

@@ -1,0 +1,1 @@
+default['chef-node-4-inspec']['file'] = '/tmp/inspec/chef_node.json'
