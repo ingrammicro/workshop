@@ -1,0 +1,135 @@
+{
+  "name": "mysql-docker",
+  "description": "Installs/Configures mysql-docker",
+  "long_description": "Installs/Configures mysql-docker",
+  "maintainer": "Ingram Micro",
+  "maintainer_email": "imco@ingrammicro.com",
+  "license": "All Rights Reserved",
+  "platforms": {
+
+  },
+  "dependencies": {
+    "docker": ">= 0.0.0"
+  },
+  "providing": {
+
+  },
+  "attributes": {
+    "mysql/version": {
+      "display_name": "MySQL version",
+      "description": "MySQL version to install",
+      "type": "string",
+      "required": "optional",
+      "default": "5.6.23",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "mysql/root_password": {
+      "display_name": "MySQL root password",
+      "description": "MySQL root password",
+      "type": "string",
+      "required": "optional",
+      "default": "",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "mysql/hostname": {
+      "display_name": "MySQL server hostname",
+      "description": "MySQL server hostname",
+      "type": "string",
+      "required": "optional",
+      "default": "mysql",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "mysql/publishport": {
+      "display_name": "MySQL server port",
+      "description": "MySQL server port",
+      "type": "string",
+      "required": "optional",
+      "default": "3306",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "mysql/app/database": {
+      "display_name": "Database name",
+      "description": "If specified, a new database will be created with that name",
+      "type": "string",
+      "required": "optional",
+      "default": "",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "mysql/app/username": {
+      "display_name": "Database user",
+      "description": "If specified, a new user will be created with the specified name and GRANT ALL on the database name",
+      "type": "string",
+      "required": "optional",
+      "default": "",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    },
+    "mysql/app/password": {
+      "display_name": "Database user password",
+      "description": "Desired password for the database user",
+      "type": "string",
+      "required": "optional",
+      "default": "",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "recipes": [
+
+      ]
+    }
+  },
+  "recipes": {
+
+  },
+  "version": "0.1.0",
+  "source_url": "",
+  "issues_url": "",
+  "privacy": false,
+  "chef_versions": [
+    [
+      ">= 12.1"
+    ]
+  ],
+  "ohai_versions": [
+
+  ],
+  "gems": [
+
+  ]
+}
